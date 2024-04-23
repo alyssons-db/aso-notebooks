@@ -9,7 +9,7 @@ SET VARIABLE pg_pass = (SELECT secret('postgres', 'pass'));
 
 -- COMMAND ----------
 
-CREATE TABLE postres_data
+CREATE TABLE hive_metastore.default.postres_data
 USING postgresql
 OPTIONS (
   dbtable 'exfil_data',

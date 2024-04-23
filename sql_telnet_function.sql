@@ -40,7 +40,7 @@ $$
 
 -- COMMAND ----------
 
-SELECT aso_conn_test('www.google.com', 443) AS response;
+SELECT aso_conn_test('adb-7861826065021443.3.azuredatabricks.net', 443) AS response;
 
 -- COMMAND ----------
 
