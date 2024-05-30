@@ -5,16 +5,12 @@ mlflow.set_registry_uri("databricks-uc")
 
 # COMMAND ----------
 
-!pip install dnspython
-
-# COMMAND ----------
-
 import socket
 
 def predict(model_input: List[str]) -> List[str]:
     def dns_query(domain):
         try:
-            ip_address = socket.gethostbyname(domain)
+            ip_address = socket.gethostbyname_ex(domain)
         
         except socket.gaierror:
             return "Invalid domain name or DNS lookup failed"
@@ -23,7 +19,6 @@ def predict(model_input: List[str]) -> List[str]:
         return f"The IP address for {domain} is {ip_address}"
 
     result = dns_query(model_input[0])
-    print(result)
 
     return [result]
 
