@@ -4,7 +4,7 @@
 
 -- COMMAND ----------
 
-use catalog aso_fe_catalog;
+use catalog aso_catalog;
 use default;
 
 -- COMMAND ----------
@@ -14,33 +14,23 @@ use default;
 
 -- COMMAND ----------
 
-CREATE OR REPLACE FUNCTION aso_conn_test(url STRING, port INTEGER)
+CREATE OR REPLACE FUNCTION aso_conn_test(host STRING, port INTEGER)
 RETURNS STRING
 LANGUAGE PYTHON
 AS $$
-    import socket
-    # Create a socket object
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(3)  # Set a timeout on blocking socket operations
-
+    import telnetlib
     try:
-        # Attempt to connect to the specified host and port
-        result = sock.connect_ex((url, port))
-        if result == 0:
-            return f"Port {port} on {url} is open."
-        else:
-            return f"Port {port} on {url} is closed."
-    except socket.error as e:
-        return f"Failed to connect to {url} on port {port}: {str(e)}"
-    finally:
-        sock.close()  # Ensure the socket is closed
+        # Create a Telnet object and establish a connection
+        telnet = telnetlib.Telnet(host, port, 30)
+        telnet.close()
+        return f"Connection to {host} on port {port} succeeded."
+    except Exception as e:
+        return f"Connection to {host} on port {port} failed: {e}"
 $$
-
-
 
 -- COMMAND ----------
 
-SELECT aso_conn_test('adb-7861826065021443.3.azuredatabricks.net', 443) AS response;
+SELECT aso_conn_test('google.com', 443) AS response;
 
 -- COMMAND ----------
 
